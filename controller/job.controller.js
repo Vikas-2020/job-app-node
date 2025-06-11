@@ -17,7 +17,6 @@ const createJob = async (req, res) => {
 };
 
 const listJob = async (req, res) => {
-
   const minSalary = req.query.minSalary || 0;
 
   const jobs = await jobModel.find({
@@ -25,7 +24,7 @@ const listJob = async (req, res) => {
       $gte: minSalary,
     },
   });
-  
+
   res.json({
     success: true,
     message: "List job api",
@@ -33,14 +32,31 @@ const listJob = async (req, res) => {
   });
 };
 
-const editJob = (req, res) => {
+const editJob = async (req, res) => {
+  //   await jobModel.updateOne(
+  //     {
+  //       _id: req.body._id,
+  //     },
+  //     {
+  //       $set: {
+  //        ...req.body,
+  //       },
+  //     }
+  //   );
+  const fields = { ...req.body };
+  delete fields._id;
+  await jobModel.findByIdAndUpdate(req.body._id, { ...fields });
   res.json({
     success: true,
     message: "Edit job api",
   });
 };
 
-const deleteJob = (req, res) => {
+const deleteJob = async (req, res) => {
+  // await jobModel.deleteOne({_id: req.body._id});
+  // await jobModel.deleteMany({_id: req.body._id});
+
+  await jobModel.findByIdAndDelete(req.body._id);
   res.json({
     success: true,
     message: "Delete job api",
