@@ -1,16 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
 const jobRoutes = require("./route/job.routes");
 
 const app = express();
+dotenv.config();
 
 //Middleware
 app.use(express.json());
 
 //Connection with mongoDB
 mongoose
-  .connect("mongodb+srv://vikaskrshiv:B9KA6HOaIyaaSiEt@cluster0.8uvctqg.mongodb.net/")
+  .connect(process.env.DB_URL)
   .then(() => console.log(`DB Connected successfully`))
   .catch((err) => console.log(`Error connecting database`, err));
 
